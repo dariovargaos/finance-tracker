@@ -14,14 +14,14 @@ export default function Signup() {
   const [displayName, setDisplayName] = useState<string>("");
   const { signup, error, isPending } = useSignup();
 
-  const handleSubmit = (e: FormEvent<HTMLInputElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     signup(email, password, displayName);
   };
 
   return (
     <form
-      onSubmit={handleSubmit as any}
+      onSubmit={handleSubmit}
       style={{
         maxWidth: "360px",
         margin: "60px auto",
