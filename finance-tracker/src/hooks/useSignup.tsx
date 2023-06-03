@@ -3,7 +3,7 @@ import { auth } from "../firebase/config";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 export const useSignup = () => {
-  const [error, setError] = useState<null | string>(null);
+  const [error, setError] = useState<any>(null);
   const [isPending, setIsPending] = useState<boolean>(false);
 
   const signup = async (

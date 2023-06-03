@@ -1,20 +1,22 @@
 import { useState, FormEvent } from "react";
+import { useSignup } from "../../hooks/useSignup";
 import {
   Heading,
   FormControl,
   FormLabel,
+  FormErrorMessage,
   Input,
-  FormHelperText,
   Button,
 } from "@chakra-ui/react";
 export default function Signup() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
+  const { signup, error, isPending } = useSignup();
 
   const handleSubmit = (e: FormEvent<HTMLInputElement>) => {
     e.preventDefault();
-    console.log(email, password, displayName);
+    signup(email, password, displayName);
   };
 
   return (
@@ -59,9 +61,16 @@ export default function Signup() {
           color="#777"
         />
       </FormControl>
-      <Button type="submit" color="#1f9752">
-        Login
-      </Button>
+      <FormControl isInvalid={error}>
+        <FormErrorMessage>{error}</FormErrorMessage>
+      </FormControl>
+
+      {isPending && <Button isLoading loadingText="Signing up..."></Button>}
+      {!isPending && (
+        <Button type="submit" color="#1f9752">
+          Signup
+        </Button>
+      )}
     </form>
   );
 }
