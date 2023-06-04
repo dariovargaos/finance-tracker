@@ -1,24 +1,27 @@
 import { useState, FormEvent } from "react";
+import { useLogin } from "../../hooks/useLogin";
 import {
   Heading,
   FormControl,
   FormLabel,
   Input,
   FormHelperText,
+  FormErrorMessage,
   Button,
 } from "@chakra-ui/react";
 export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const { login, error, isPending } = useLogin();
 
-  const handleSubmit = (e: FormEvent<HTMLInputElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(email, password);
+    login(email, password);
   };
 
   return (
     <form
-      onSubmit={handleSubmit as any}
+      onSubmit={handleSubmit}
       style={{
         maxWidth: "360px",
         margin: "60px auto",
@@ -48,9 +51,17 @@ export default function Login() {
           color="#777"
         />
       </FormControl>
-      <Button type="submit" color="#1f9752">
-        Login
-      </Button>
+      <FormControl isInvalid={error}>
+        <FormErrorMessage>{error}</FormErrorMessage>
+      </FormControl>
+      {!isPending && (
+        <Button type="submit" color="#1f9752">
+          Login
+        </Button>
+      )}
+      {isPending && (
+        <Button isLoading color="#1f9752" loadingText="Logging in..."></Button>
+      )}
     </form>
   );
 }
