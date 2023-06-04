@@ -9,7 +9,7 @@ interface LogoutExports {
   isPending: boolean;
 }
 
-const useLogout = (): LogoutExports => {
+export const useLogout = (): LogoutExports => {
   const [error, setError] = useState<any>(null);
   const [isPending, setIsPending] = useState<boolean>(false);
   const { dispatch } = useAuthContext();

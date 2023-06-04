@@ -1,6 +1,8 @@
 import { Link, Outlet } from "react-router-dom";
-import { Box, List, ListItem, Spacer } from "@chakra-ui/react";
+import { Box, Button, List, ListItem, Spacer } from "@chakra-ui/react";
+import { useLogout } from "../hooks/useLogout";
 export default function RootLayout() {
+  const { logout } = useLogout();
   return (
     <Box>
       <Box as="nav" w="100%" bg="#effaf0" p="20px 10px" boxSizing="border-box">
@@ -16,6 +18,9 @@ export default function RootLayout() {
           </ListItem>
           <ListItem ml="16px" color="#333">
             <Link to="/signup">Signup</Link>
+          </ListItem>
+          <ListItem ml="16px" color="#333">
+            <Button onClick={logout}>Logout</Button>
           </ListItem>
         </List>
       </Box>
