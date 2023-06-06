@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { AuthContextProvider } from "./context/AuthContext.tsx";
+import { AuthContextProvider } from "./context/AuthContext";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import App from "./App.tsx";
 
@@ -34,11 +34,11 @@ const customTheme = extendTheme({
 });
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <ChakraProvider theme={customTheme}>
-    <React.StrictMode>
-      <AuthContextProvider>
+  <AuthContextProvider>
+    <ChakraProvider theme={customTheme}>
+      <React.StrictMode>
         <App />
-      </AuthContextProvider>
-    </React.StrictMode>
-  </ChakraProvider>
+      </React.StrictMode>
+    </ChakraProvider>
+  </AuthContextProvider>
 );

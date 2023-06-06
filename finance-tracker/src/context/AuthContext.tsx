@@ -1,4 +1,6 @@
-import React, { createContext, useReducer, ReactNode } from "react";
+import React, { createContext, useReducer, ReactNode, useEffect } from "react";
+import { auth } from "../firebase/config";
+import { onAuthStateChanged } from "firebase/auth";
 
 interface User {
   email: string;
@@ -7,11 +9,12 @@ interface User {
 }
 interface AuthState {
   user: any;
+  authIsReady: boolean;
 }
 
 interface AuthAction {
   type: string;
-  payload?: User;
+  payload?: any;
 }
 
 export interface AuthContextType {
@@ -19,6 +22,7 @@ export interface AuthContextType {
     displayName: string;
   } | null;
   dispatch: React.Dispatch<AuthAction>;
+  authIsReady: boolean;
 }
 
 interface AuthContextProviderProps {
@@ -27,6 +31,7 @@ interface AuthContextProviderProps {
 
 const initialState: AuthState = {
   user: null,
+  authIsReady: false,
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -40,6 +45,8 @@ export const authReducer = (state: AuthState, action: AuthAction) => {
 
     case "LOGOUT":
       return { ...state, user: null };
+    case "AUTH_IS_READY":
+      return { ...state, user: action.payload, authIsReady: true };
     default:
       return state;
   }
@@ -50,8 +57,16 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   const contextValue: AuthContextType = {
     user: state.user,
+    authIsReady: state.authIsReady,
     dispatch,
   };
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      dispatch({ type: "AUTH_IS_READY", payload: user });
+      unsub();
+    });
+  }, []);
 
   console.log("AuthContext state:", state);
   return (
