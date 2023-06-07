@@ -1,11 +1,16 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, Spacer } from "@chakra-ui/react";
+
+//components
+import TransactionForm from "./TransactionForm";
 
 export default function Home() {
   return (
-    <Box>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam dolores
-      quam quo cupiditate vero vel maiores repudiandae deserunt. Odio ratione
-      hic eaque consequatur recusandae velit officia alias, culpa ut est!
-    </Box>
+    <Flex maxW="960px" m="60px auto">
+      <Box>Transaction list</Box>
+      <Spacer />
+      <Box>
+        <TransactionForm />
+      </Box>
+    </Flex>
   );
 }
