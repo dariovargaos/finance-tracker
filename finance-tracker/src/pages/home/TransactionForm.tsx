@@ -1,4 +1,5 @@
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
+import { useFirestore } from "../../hooks/useFirestore";
 import {
   Box,
   Heading,
@@ -11,17 +12,31 @@ import {
   CardBody,
 } from "@chakra-ui/react";
 
-export default function TransactionForm() {
-  const [transaction, setTransaction] = useState<string>("");
+interface TransactionFormProps {
+  uid?: string;
+}
+
+export default function TransactionForm({ uid }: TransactionFormProps) {
+  const [transactionName, setTransactionName] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
+  const { addDocument, response } = useFirestore("transactions");
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log({
-      name: transaction,
+    addDocument({
+      uid,
+      transactionName,
       amount,
     });
   };
+
+  useEffect(() => {
+    if (response.success) {
+      setTransactionName("");
+      setAmount("");
+    }
+  }, [response.success]);
+
   return (
     <Box>
       <Card bg="#1f9751" size="lg">
@@ -37,8 +52,8 @@ export default function TransactionForm() {
               <Input
                 type="text"
                 required
-                onChange={(e) => setTransaction(e.target.value)}
-                value={transaction}
+                onChange={(e) => setTransactionName(e.target.value)}
+                value={transactionName}
                 bg="white"
               />
             </FormControl>

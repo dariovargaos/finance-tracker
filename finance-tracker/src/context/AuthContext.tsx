@@ -3,12 +3,11 @@ import { auth } from "../firebase/config";
 import { onAuthStateChanged } from "firebase/auth";
 
 interface User {
-  email: string;
-  password: string;
-  displayName?: string;
+  displayName: string;
+  uid: string;
 }
 interface AuthState {
-  user: any;
+  user: User | null;
   authIsReady: boolean;
 }
 
@@ -18,9 +17,7 @@ interface AuthAction {
 }
 
 export interface AuthContextType {
-  user: {
-    displayName: string;
-  } | null;
+  user: User | null;
   dispatch: React.Dispatch<AuthAction>;
   authIsReady: boolean;
 }

@@ -7,6 +7,11 @@ import {
   CollectionReference,
 } from "firebase/firestore";
 
+interface useFirestoreExports {
+  addDocument: (doc: object) => void;
+  deleteDocument: (id: string) => void;
+  response: FirestoreState;
+}
 interface FirestoreState {
   document: DocumentReference | null;
   isPending: boolean;
@@ -52,7 +57,7 @@ const firestoreReducer = (
   }
 };
 
-export const useFirestore = (collectionName: string) => {
+export const useFirestore = (collectionName: string): useFirestoreExports => {
   const [response, dispatch] = useReducer(firestoreReducer, initialState);
   const [isCanceled, setIsCancelled] = useState(false);
 
