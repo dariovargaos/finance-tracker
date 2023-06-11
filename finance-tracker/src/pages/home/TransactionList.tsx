@@ -1,5 +1,13 @@
-import { List, ListItem, Text, Spacer } from "@chakra-ui/react";
+import {
+  List,
+  ListItem,
+  Text,
+  Spacer,
+  Button,
+  CloseButton,
+} from "@chakra-ui/react";
 import { DocumentData } from "firebase/firestore";
+import { useFirestore } from "../../hooks/useFirestore";
 
 interface TransactionListProps {
   transactions: DocumentData[];
@@ -8,6 +16,7 @@ interface TransactionListProps {
 export default function TransactionList({
   transactions,
 }: TransactionListProps) {
+  const { deleteDocument } = useFirestore("transactions");
   return (
     <List spacing="40px">
       {transactions.map((transaction) => (
@@ -28,6 +37,17 @@ export default function TransactionList({
           <Text color="#777" fontWeight="bold" fontSize="1.6em">
             €{transaction.amount}
           </Text>
+
+          {/* <Button size="xs" bg="#ddd" color="#777" border="none">
+            X
+          </Button> */}
+          <CloseButton
+            onClick={() => deleteDocument(transaction.id)}
+            color="#777"
+            mb="auto"
+            mt="-20px"
+            mr="-20px"
+          />
         </ListItem>
       ))}
     </List>
