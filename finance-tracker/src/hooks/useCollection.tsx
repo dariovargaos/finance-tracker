@@ -9,6 +9,7 @@ import {
   DocumentData,
   query,
   where,
+  orderBy,
 } from "firebase/firestore";
 
 interface UseCollectionExports {
@@ -27,7 +28,11 @@ export const useCollection = (collectionName: string): UseCollectionExports => {
       collectionName
     );
 
-    const q = query(collectionRef, where("uid", "==", user?.uid));
+    const q = query(
+      collectionRef,
+      where("uid", "==", user?.uid),
+      orderBy("createdAt", "desc")
+    );
 
     const unsubscribe = onSnapshot(
       q,
