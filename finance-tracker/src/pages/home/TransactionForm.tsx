@@ -58,7 +58,7 @@ export default function TransactionForm({ uid }: TransactionFormProps) {
               />
             </FormControl>
             <FormControl mb="15px">
-              <FormLabel color="white">Amount ($):</FormLabel>
+              <FormLabel color="white">Amount (€):</FormLabel>
               <Input
                 type="number"
                 required
