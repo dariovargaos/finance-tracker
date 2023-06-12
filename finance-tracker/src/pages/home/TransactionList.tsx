@@ -1,11 +1,4 @@
-import {
-  List,
-  ListItem,
-  Text,
-  Spacer,
-  Button,
-  CloseButton,
-} from "@chakra-ui/react";
+import { List, ListItem, Text, Spacer, CloseButton } from "@chakra-ui/react";
 import { DocumentData } from "firebase/firestore";
 import { useFirestore } from "../../hooks/useFirestore";
 
@@ -37,10 +30,6 @@ export default function TransactionList({
           <Text color="#777" fontWeight="bold" fontSize="1.6em">
             €{transaction.amount}
           </Text>
-
-          {/* <Button size="xs" bg="#ddd" color="#777" border="none">
-            X
-          </Button> */}
           <CloseButton
             onClick={() => deleteDocument(transaction.id)}
             color="#777"

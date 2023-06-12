@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { auth } from "../firebase/config";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  UserCredential,
+} from "firebase/auth";
 import { useAuthContext } from "./useAuthContext";
 
 interface SignupExports {
@@ -29,14 +33,18 @@ export const useSignup = (): SignupExports => {
 
     try {
       //signup user
-      const res = await createUserWithEmailAndPassword(auth, email, password);
+      const res: UserCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
       if (!res) {
         throw new Error("Could not complete signup.");
       }
 
       //add display name to user
-      await updateProfile(auth.currentUser, {
+      await updateProfile(res.user, {
         displayName: displayName,
       });
 
