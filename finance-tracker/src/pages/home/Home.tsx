@@ -13,6 +13,7 @@ export default function Home() {
   return (
     <Flex maxW="960px" m="60px auto">
       <Box>
+        {documents?.length < 1 && <Text>No new transactions yet!</Text>}
         {error && <Text>{error}</Text>}
         {documents && <TransactionList transactions={documents} />}
       </Box>
