@@ -7,11 +7,26 @@ import {
   FormErrorMessage,
   Input,
   Button,
+  Flex,
+  Box,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
 } from "@chakra-ui/react";
+
+//icons
+import {
+  EmailIcon,
+  LockIcon,
+  ViewIcon,
+  ViewOffIcon,
+  AtSignIcon,
+} from "@chakra-ui/icons";
 export default function Signup() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const { signup, error, isPending } = useSignup();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -19,58 +34,83 @@ export default function Signup() {
     signup(email, password, displayName);
   };
 
-  return (
-    <form
-      onSubmit={handleSubmit}
-      style={{
-        maxWidth: "360px",
-        margin: "60px auto",
-        padding: "20px",
-        boxShadow: "3px 3px 5px rgba(0,0,0, 0.05)",
-        border: "1px solid #ddd",
-      }}
-    >
-      <Heading mb="20px">Signup</Heading>
-      <FormControl mb="20px">
-        <FormLabel>email:</FormLabel>
-        <Input
-          type="email"
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-          fontSize="1em"
-          color="#777"
-        />
-      </FormControl>
-      <FormControl mb="20px">
-        <FormLabel>password:</FormLabel>
-        <Input
-          type="password"
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
-          fontSize="1em"
-          color="#777"
-        />
-      </FormControl>
-      <FormControl mb="20px">
-        <FormLabel>display name:</FormLabel>
-        <Input
-          type="text"
-          onChange={(e) => setDisplayName(e.target.value)}
-          value={displayName}
-          fontSize="1em"
-          color="#777"
-        />
-      </FormControl>
-      <FormControl isInvalid={error}>
-        <FormErrorMessage>{error}</FormErrorMessage>
-      </FormControl>
+  const handleClick = () => {
+    setShowPassword(!showPassword);
+  };
 
-      {isPending && <Button isLoading loadingText="Signing up..."></Button>}
-      {!isPending && (
-        <Button type="submit" color="#1f9752">
-          Signup
-        </Button>
-      )}
-    </form>
+  return (
+    <Flex justify="center">
+      <Box
+        w={{ base: "90%", sm: "50%", md: "40%", lg: "30%" }}
+        border="1px solid #ddd"
+        boxShadow="base"
+        p="20px"
+      >
+        <form onSubmit={handleSubmit}>
+          <Heading mb="20px">Signup</Heading>
+          <FormControl mb="20px">
+            <FormLabel>email:</FormLabel>
+            <InputGroup>
+              <InputLeftElement>
+                <EmailIcon />
+              </InputLeftElement>
+              <Input
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+                color="#777"
+              />
+            </InputGroup>
+          </FormControl>
+          <FormControl mb="20px">
+            <FormLabel>password:</FormLabel>
+            <InputGroup>
+              <InputLeftElement>
+                <LockIcon />
+              </InputLeftElement>
+              <Input
+                type={showPassword ? "text" : "password"}
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                color="#777"
+              />
+              <InputRightElement>
+                <Button
+                  colorScheme="whatsapp"
+                  variant="ghost"
+                  onClick={handleClick}
+                >
+                  {showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+          </FormControl>
+          <FormControl mb="20px">
+            <FormLabel>display name:</FormLabel>
+            <InputGroup>
+              <InputLeftElement>
+                <AtSignIcon />
+              </InputLeftElement>
+              <Input
+                type="text"
+                onChange={(e) => setDisplayName(e.target.value)}
+                value={displayName}
+                color="#777"
+              />
+            </InputGroup>
+          </FormControl>
+          <FormControl isInvalid={error}>
+            <FormErrorMessage>{error}</FormErrorMessage>
+          </FormControl>
+
+          {isPending && <Button isLoading loadingText="Signing up..."></Button>}
+          {!isPending && (
+            <Button type="submit" colorScheme="whatsapp">
+              Signup
+            </Button>
+          )}
+        </form>
+      </Box>
+    </Flex>
   );
 }
