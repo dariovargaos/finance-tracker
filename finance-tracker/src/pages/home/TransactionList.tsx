@@ -11,31 +11,26 @@ export default function TransactionList({
 }: TransactionListProps) {
   const { deleteDocument } = useFirestore("transactions");
   return (
-    <List spacing="40px">
+    <List display="flex" flexDir="column" gap={12}>
       {transactions.map((transaction) => (
         <ListItem
           key={transaction.id}
           p="20px"
           display="flex"
-          border="1px solid #f2f2f2"
-          boxShadow="3px 3px 5px rgba(50,50,50,0.1)"
+          boxShadow="base"
           borderLeft="4px solid #1f9751"
           alignItems="center"
-          minW="450px"
         >
-          <Text color="#777" fontSize="1.3em">
+          <Text color="#777" fontSize="xl">
             {transaction.transactionName}
           </Text>
           <Spacer />
-          <Text color="#777" fontWeight="bold" fontSize="1.6em">
+          <Text color="#777" fontWeight="bold" fontSize="2xl">
             €{transaction.amount}
           </Text>
           <CloseButton
             onClick={() => deleteDocument(transaction.id)}
             color="#777"
-            mb="auto"
-            mt="-20px"
-            mr="-20px"
           />
         </ListItem>
       ))}
