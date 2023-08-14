@@ -20,6 +20,7 @@ export default function TransactionList({
           boxShadow="base"
           borderLeft="4px solid #1f9751"
           alignItems="center"
+          wordBreak="break-word"
         >
           <Text color="#777" fontSize="xl">
             {transaction.transactionName}

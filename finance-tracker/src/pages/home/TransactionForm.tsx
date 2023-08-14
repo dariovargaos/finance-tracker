@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardBody,
   CloseButton,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 
 interface TransactionFormProps {
@@ -42,13 +43,20 @@ export default function TransactionForm({
     }
   }, [response.success, closeModal]);
 
+  const isMobile = useBreakpointValue({
+    base: true,
+    sm: true,
+    md: false,
+    lg: false,
+  });
+
   return (
     <Card bg="whatsapp.600">
       <CardHeader display="flex" justifyContent="space-between">
         <Heading size="lg" color="white">
           Add transaction
         </Heading>
-        <CloseButton onClick={closeModal} color="white" />
+        {isMobile && <CloseButton onClick={closeModal} color="white" />}
       </CardHeader>
       <CardBody>
         <form onSubmit={handleSubmit}>
