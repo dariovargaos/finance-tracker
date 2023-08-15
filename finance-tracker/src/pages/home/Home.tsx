@@ -20,6 +20,7 @@ import {
 //components
 import TransactionForm from "./TransactionForm";
 import TransactionList from "./TransactionList";
+import MonthPicker from "./MonthPicker";
 
 export default function Home() {
   const { user } = useAuthContext();
@@ -38,44 +39,46 @@ export default function Home() {
   });
 
   return (
-    <Flex
-      justify={{
-        base: "flex-end",
-        sm: "center",
-        md: "space-around",
-        lg: "space-around",
-      }}
-      flexDir={{ base: "column", sm: "column", md: "row", lg: "row" }}
-      gap={10}
-      p={2}
-    >
+    <Box p={2}>
       {isMobile && (
-        <Flex justify="flex-end">
-          <Button
-            onClick={() => setOpenModal(true)}
-            colorScheme="whatsapp"
-            size={{ base: "sm", sm: "md" }}
-            w={{ base: "30%" }}
-          >
-            Add transaction
-          </Button>
+        <Flex w="100%" flexDir="column" gap={3}>
+          <Flex justify="space-between">
+            <MonthPicker />
+            <Button
+              onClick={() => setOpenModal(true)}
+              colorScheme="whatsapp"
+              size={{ base: "sm", sm: "md" }}
+              w={{ base: "30%" }}
+            >
+              Add transaction
+            </Button>
+          </Flex>
           <Modal isOpen={openModal} onClose={closeModal} isCentered>
             <ModalOverlay />
             <ModalContent w={{ base: "90%", sm: "60%" }}>
               <TransactionForm uid={user?.uid} closeModal={closeModal} />
             </ModalContent>
           </Modal>
+          <Box w={{ base: "100%", sm: "95%" }}>
+            {error && <Text>{error}</Text>}
+            {documents && <TransactionList transactions={documents} />}
+          </Box>
         </Flex>
       )}
-      <Box w={{ base: "100%", sm: "95%", md: "60%", lg: "40%" }}>
-        {error && <Text>{error}</Text>}
-        {documents && <TransactionList transactions={documents} />}
-      </Box>
       {!isMobile && (
-        <Box>
-          <TransactionForm uid={user?.uid} closeModal={closeModal} />
-        </Box>
+        <Flex flexDir="column">
+          <MonthPicker />
+          <Flex justify="space-evenly">
+            <Box w={{ md: "60%", lg: "50%" }}>
+              {error && <Text>{error}</Text>}
+              {documents && <TransactionList transactions={documents} />}
+            </Box>
+            <Box>
+              <TransactionForm uid={user?.uid} closeModal={closeModal} />
+            </Box>
+          </Flex>
+        </Flex>
       )}
-    </Flex>
+    </Box>
   );
 }
