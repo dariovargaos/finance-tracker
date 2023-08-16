@@ -6,7 +6,7 @@ import {
   FormControl,
   FormLabel,
   Input,
-  FormErrorMessage,
+  Text,
   Button,
   Box,
   Flex,
@@ -82,9 +82,11 @@ export default function Login() {
               </InputRightElement>
             </InputGroup>
           </FormControl>
-          <FormControl isInvalid={error}>
-            <FormErrorMessage>{error}</FormErrorMessage>
-          </FormControl>
+          {error && (
+            <Text fontWeight="bold" color="red">
+              {error}
+            </Text>
+          )}
           {!isPending && (
             <Button type="submit" colorScheme="whatsapp">
               Login

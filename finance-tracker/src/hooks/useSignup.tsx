@@ -6,6 +6,7 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { useAuthContext } from "./useAuthContext";
+import { useToast } from "@chakra-ui/react";
 
 interface SignupExports {
   signup: (
@@ -23,6 +24,8 @@ export const useSignup = (): SignupExports => {
   const { dispatch } = useAuthContext();
   const [isCancelled, setIsCancelled] = useState<boolean>(false);
 
+  const toast = useToast();
+
   const signup = async (
     email: string,
     password: string,
@@ -32,6 +35,29 @@ export const useSignup = (): SignupExports => {
     setIsPending(true);
 
     try {
+      if (email.trim() === "") {
+        setIsPending(false);
+        setError("Email is required.");
+        return;
+      }
+
+      if (password.trim() === "") {
+        setIsPending(false);
+        setError("Password is required.");
+        return;
+      }
+
+      if (password.length < 6) {
+        setIsPending(false);
+        setError("Password should be at least 6 characters.");
+        return;
+      }
+
+      if (displayName.trim() === "") {
+        setIsPending(false);
+        setError("Display name cannot be empty.");
+        return;
+      }
       //signup user
       const res: UserCredential = await createUserWithEmailAndPassword(
         auth,
@@ -56,11 +82,41 @@ export const useSignup = (): SignupExports => {
         setIsPending(false);
         setError(null);
       }
+
+      toast({
+        title: "Successfully signed up.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (err: any) {
       if (!isCancelled) {
         console.log(err);
-        setError(err.message);
+        if (
+          err.message.includes("Firebase: Error (auth/email-already-in-use).")
+        ) {
+          setError(
+            "This email address is already in use. Please choose another email."
+          );
+        } else if (
+          err.message.includes("Firebase: Error (auth/invalid-email).")
+        ) {
+          setError("Invalid email.");
+        } else if (
+          err.message.includes("Firebase: Error (auth/missing-password).")
+        ) {
+          setError("You must enter a password.");
+        } else if (
+          err.message.includes(
+            "Firebase: Password should be at least 6 characters (auth/weak-password)."
+          )
+        ) {
+          setError("Password should be at least 6 characters.");
+        } else {
+          setError(err.message);
+        }
         setIsPending(false);
+        return;
       }
     }
   };

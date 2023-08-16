@@ -9,12 +9,7 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   useBreakpointValue,
-  Spacer,
 } from "@chakra-ui/react";
 
 //components

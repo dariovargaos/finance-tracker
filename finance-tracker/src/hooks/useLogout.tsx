@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { auth } from "../firebase/config";
 import { signOut } from "firebase/auth";
 import { useAuthContext } from "./useAuthContext";
+import { useToast } from "@chakra-ui/react";
 
 interface LogoutExports {
   logout: () => Promise<void>;
@@ -14,6 +15,8 @@ export const useLogout = (): LogoutExports => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const { dispatch } = useAuthContext();
   const [isCancelled, setIsCancelled] = useState<boolean>(false);
+
+  const toast = useToast();
 
   const logout = async () => {
     setError(null);
@@ -31,6 +34,13 @@ export const useLogout = (): LogoutExports => {
         setIsPending(false);
         setError(null);
       }
+
+      toast({
+        title: "Logged out.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (err: any) {
       if (!isCancelled) {
         console.log(err);

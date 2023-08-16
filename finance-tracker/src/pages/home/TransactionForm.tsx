@@ -11,6 +11,8 @@ import {
   CardBody,
   CloseButton,
   useBreakpointValue,
+  NumberInput,
+  NumberInputField,
 } from "@chakra-ui/react";
 
 interface TransactionFormProps {
@@ -72,13 +74,14 @@ export default function TransactionForm({
           </FormControl>
           <FormControl mb="15px">
             <FormLabel color="white">Amount (€):</FormLabel>
-            <Input
-              type="number"
-              required
-              onChange={(e) => setAmount(e.target.value)}
-              value={amount}
-              bg="white"
-            />
+            <NumberInput>
+              <NumberInputField
+                required
+                onChange={(e) => setAmount(e.target.value)}
+                value={amount}
+                bg="white"
+              />
+            </NumberInput>
           </FormControl>
           <Button
             type="submit"

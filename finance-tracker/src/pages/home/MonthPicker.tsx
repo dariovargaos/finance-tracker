@@ -2,12 +2,8 @@ import {
   Box,
   Tabs,
   TabList,
-  TabPanels,
   Tab,
-  TabPanel,
-  Text,
   useBreakpointValue,
-  Menu,
   Select,
 } from "@chakra-ui/react";
 
@@ -63,7 +59,9 @@ export default function MonthPicker({ changeFilter }: MonthPickerProps) {
       {isSmallScreen && (
         <Select placeholder="Pick a month" onChange={handleChange}>
           {months.map((month) => (
-            <option value={month}>{month}</option>
+            <option key={month} value={month}>
+              {month}
+            </option>
           ))}
         </Select>
       )}

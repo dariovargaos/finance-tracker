@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { auth } from "../firebase/config";
 import { sendPasswordResetEmail } from "firebase/auth";
@@ -8,9 +8,10 @@ import {
   Input,
   FormControl,
   Button,
-  useToast,
   FormHelperText,
   Heading,
+  FormErrorMessage,
+  Text,
 } from "@chakra-ui/react";
 
 export default function ResetPassword() {
@@ -19,31 +20,23 @@ export default function ResetPassword() {
   const [resetError, setResetError] = useState<any>(null);
 
   const navigate: NavigateFunction = useNavigate();
-  const toast = useToast();
 
-  const handleResetPassword = async (e) => {
+  const handleResetPassword = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
+      if (email.trim() === "") {
+        setResetSuccess(false);
+        setResetError("Email is required.");
+        return;
+      }
       await sendPasswordResetEmail(auth, email);
       setResetSuccess(true);
       setResetError(null);
-      toast({
-        title: "Please check your email.",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
       setEmail("");
     } catch (err: any) {
       setResetSuccess(false);
-      setResetError(err.message);
-      toast({
-        title: "Please check if you entered correct email.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      setResetError("User not found.");
     }
   };
   return (
@@ -59,13 +52,23 @@ export default function ResetPassword() {
               type="email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
-              required
               placeholder="youremail@email.com"
             />
             <FormHelperText>
               We'll send a link to your email to create a new password.
             </FormHelperText>
+            <FormErrorMessage>Email is required.</FormErrorMessage>
           </FormControl>
+          {resetSucces && (
+            <Text color="whatsapp.500" fontWeight="bold">
+              Please check your inbox!
+            </Text>
+          )}
+          {resetError && (
+            <Text color="red" fontWeight="bold">
+              {resetError}
+            </Text>
+          )}
           <Button type="submit" colorScheme="whatsapp" size="sm">
             Send link
           </Button>

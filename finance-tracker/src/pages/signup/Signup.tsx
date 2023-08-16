@@ -4,7 +4,6 @@ import {
   Heading,
   FormControl,
   FormLabel,
-  FormErrorMessage,
   Input,
   Button,
   Flex,
@@ -12,6 +11,8 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  FormHelperText,
+  Text,
 } from "@chakra-ui/react";
 
 //icons
@@ -31,6 +32,7 @@ export default function Signup() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     signup(email, password, displayName);
   };
 
@@ -48,7 +50,7 @@ export default function Signup() {
       >
         <form onSubmit={handleSubmit}>
           <Heading mb="20px">Signup</Heading>
-          <FormControl mb="20px" isRequired>
+          <FormControl mb="20px">
             <FormLabel>email:</FormLabel>
             <InputGroup>
               <InputLeftElement>
@@ -62,7 +64,7 @@ export default function Signup() {
               />
             </InputGroup>
           </FormControl>
-          <FormControl mb="20px" isRequired>
+          <FormControl mb="20px">
             <FormLabel>password:</FormLabel>
             <InputGroup>
               <InputLeftElement>
@@ -84,8 +86,11 @@ export default function Signup() {
                 </Button>
               </InputRightElement>
             </InputGroup>
+            <FormHelperText>
+              Password has to have at least 6 characters.
+            </FormHelperText>
           </FormControl>
-          <FormControl mb="20px" isRequired>
+          <FormControl mb="20px">
             <FormLabel>display name:</FormLabel>
             <InputGroup>
               <InputLeftElement>
@@ -96,11 +101,13 @@ export default function Signup() {
                 onChange={(e) => setDisplayName(e.target.value)}
                 value={displayName}
                 color="gray.500"
+                minLength={1}
+                maxLength={20}
               />
             </InputGroup>
-          </FormControl>
-          <FormControl isInvalid={error}>
-            <FormErrorMessage>{error}</FormErrorMessage>
+            <FormHelperText>
+              Display name can have maximum of 20 characters.
+            </FormHelperText>
           </FormControl>
 
           {isPending && <Button isLoading loadingText="Signing up..."></Button>}
@@ -110,6 +117,11 @@ export default function Signup() {
             </Button>
           )}
         </form>
+        {error && (
+          <Text color="red" fontWeight="bold">
+            {error}
+          </Text>
+        )}
       </Box>
     </Flex>
   );
