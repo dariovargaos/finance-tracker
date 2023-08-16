@@ -26,24 +26,39 @@ export default function Home() {
   const { user } = useAuthContext();
   const { documents, error } = useCollection("transactions");
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [currentFilter, setCurrentFilter] = useState<string>("January");
 
   const closeModal = () => {
     setOpenModal(false);
   };
 
-  const isMobile = useBreakpointValue({
+  const changeFilter = (newFilter: string) => {
+    setCurrentFilter(newFilter);
+  };
+
+  const filteredTransactions = documents
+    ? documents.filter((document) => {
+        const createdAt = document.createdAt.toDate();
+        const createdAtMonth = createdAt.toLocaleString("en-US", {
+          month: "long",
+        });
+        return currentFilter === createdAtMonth;
+      })
+    : [];
+
+  const isSmallScreen: boolean | undefined = useBreakpointValue({
     base: true,
     sm: true,
-    md: false,
+    md: true,
     lg: false,
   });
 
   return (
     <Box p={2}>
-      {isMobile && (
-        <Flex w="100%" flexDir="column" gap={3}>
+      {isSmallScreen && (
+        <Flex w="100%" flexDir="column" gap={6}>
           <Flex justify="space-between">
-            <MonthPicker />
+            <MonthPicker changeFilter={changeFilter} />
             <Button
               onClick={() => setOpenModal(true)}
               colorScheme="whatsapp"
@@ -61,17 +76,25 @@ export default function Home() {
           </Modal>
           <Box w={{ base: "100%", sm: "95%" }}>
             {error && <Text>{error}</Text>}
-            {documents && <TransactionList transactions={documents} />}
+            {filteredTransactions.length > 0 ? (
+              <TransactionList transactions={filteredTransactions} />
+            ) : (
+              <Text>No transactions were made this month!</Text>
+            )}
           </Box>
         </Flex>
       )}
-      {!isMobile && (
-        <Flex flexDir="column">
-          <MonthPicker />
+      {!isSmallScreen && (
+        <Flex flexDir="column" gap={10}>
+          <MonthPicker changeFilter={changeFilter} />
           <Flex justify="space-evenly">
             <Box w={{ md: "60%", lg: "50%" }}>
               {error && <Text>{error}</Text>}
-              {documents && <TransactionList transactions={documents} />}
+              {filteredTransactions.length > 0 ? (
+                <TransactionList transactions={filteredTransactions} />
+              ) : (
+                <Text>No transactions were made this month!</Text>
+              )}
             </Box>
             <Box>
               <TransactionForm uid={user?.uid} closeModal={closeModal} />

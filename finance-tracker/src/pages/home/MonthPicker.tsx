@@ -11,7 +11,11 @@ import {
   Select,
 } from "@chakra-ui/react";
 
-const months = [
+interface MonthPickerProps {
+  changeFilter: (newFilter: string) => void;
+}
+
+const months: string[] = [
   "January",
   "February",
   "March",
@@ -26,34 +30,38 @@ const months = [
   "December",
 ];
 
-export default function MonthPicker() {
-  const isMobile = useBreakpointValue({
+export default function MonthPicker({ changeFilter }: MonthPickerProps) {
+  const handleClick = (newFilter: string) => {
+    changeFilter(newFilter);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newFilter = e.target.value;
+    changeFilter(newFilter);
+  };
+
+  const isSmallScreen: boolean | undefined = useBreakpointValue({
     base: true,
     sm: true,
-    md: false,
+    md: true,
     lg: false,
   });
   return (
-    <Box>
-      {!isMobile && (
-        <Tabs colorScheme="whatsapp" isLazy isFitted>
+    <Box display="flex" justifyContent="center">
+      {!isSmallScreen && (
+        <Tabs colorScheme="whatsapp" isLazy>
           <TabList>
             {months.map((month) => (
-              <Tab key={month}>{month}</Tab>
+              <Tab key={month} onClick={() => handleClick(month)}>
+                {month}
+              </Tab>
             ))}
           </TabList>
-          <TabPanels>
-            {months.map((month) => (
-              <TabPanel>
-                <Text>{month}</Text>
-              </TabPanel>
-            ))}
-          </TabPanels>
         </Tabs>
       )}
 
-      {isMobile && (
-        <Select placeholder="Pick a month">
+      {isSmallScreen && (
+        <Select placeholder="Pick a month" onChange={handleChange}>
           {months.map((month) => (
             <option value={month}>{month}</option>
           ))}

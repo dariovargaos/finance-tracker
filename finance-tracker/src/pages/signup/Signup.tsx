@@ -48,7 +48,7 @@ export default function Signup() {
       >
         <form onSubmit={handleSubmit}>
           <Heading mb="20px">Signup</Heading>
-          <FormControl mb="20px">
+          <FormControl mb="20px" isRequired>
             <FormLabel>email:</FormLabel>
             <InputGroup>
               <InputLeftElement>
@@ -58,11 +58,11 @@ export default function Signup() {
                 type="email"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
-                color="#777"
+                color="gray.500"
               />
             </InputGroup>
           </FormControl>
-          <FormControl mb="20px">
+          <FormControl mb="20px" isRequired>
             <FormLabel>password:</FormLabel>
             <InputGroup>
               <InputLeftElement>
@@ -72,7 +72,7 @@ export default function Signup() {
                 type={showPassword ? "text" : "password"}
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
-                color="#777"
+                color="gray.500"
               />
               <InputRightElement>
                 <Button
@@ -85,7 +85,7 @@ export default function Signup() {
               </InputRightElement>
             </InputGroup>
           </FormControl>
-          <FormControl mb="20px">
+          <FormControl mb="20px" isRequired>
             <FormLabel>display name:</FormLabel>
             <InputGroup>
               <InputLeftElement>
@@ -95,7 +95,7 @@ export default function Signup() {
                 type="text"
                 onChange={(e) => setDisplayName(e.target.value)}
                 value={displayName}
-                color="#777"
+                color="gray.500"
               />
             </InputGroup>
           </FormControl>

@@ -1,4 +1,5 @@
 import { useState, FormEvent } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { useLogin } from "../../hooks/useLogin";
 import {
   Heading,
@@ -12,6 +13,7 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  Link,
 } from "@chakra-ui/react";
 
 //icons
@@ -52,7 +54,7 @@ export default function Login() {
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
                 fontSize="1em"
-                color="#777"
+                color="gray.500"
               />
             </InputGroup>
           </FormControl>
@@ -67,7 +69,7 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
                 fontSize="1em"
-                color="#777"
+                color="gray.500"
               />
               <InputRightElement>
                 <Button
@@ -91,11 +93,14 @@ export default function Login() {
           {isPending && (
             <Button
               isLoading
-              color="#1f9752"
+              colorScheme="whatsapp"
               loadingText="Logging in..."
             ></Button>
           )}
         </form>
+        <Link as={RouterLink} to="/resetpassword" color="whatsapp.500">
+          Forgot password?
+        </Link>
       </Box>
     </Flex>
   );
