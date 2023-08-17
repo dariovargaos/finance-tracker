@@ -16,6 +16,7 @@ import {
 import TransactionForm from "./TransactionForm";
 import TransactionList from "./TransactionList";
 import MonthPicker from "./MonthPicker";
+import TransactionsSum from "./TransactionsSum";
 
 export default function Home() {
   const { user } = useAuthContext();
@@ -52,15 +53,16 @@ export default function Home() {
     <Box p={2}>
       {isSmallScreen && (
         <Flex w="100%" flexDir="column" gap={6}>
-          <Flex justify="space-between">
+          <Flex justify="space-between" align="center">
             <MonthPicker changeFilter={changeFilter} />
+            <TransactionsSum transactions={filteredTransactions} />
             <Button
               onClick={() => setOpenModal(true)}
               colorScheme="whatsapp"
               size={{ base: "sm", sm: "md" }}
-              w={{ base: "30%" }}
+              w={{ base: "20%" }}
             >
-              Add transaction
+              Add +
             </Button>
           </Flex>
           <Modal isOpen={openModal} onClose={closeModal} isCentered>
@@ -82,6 +84,9 @@ export default function Home() {
       {!isSmallScreen && (
         <Flex flexDir="column" gap={10}>
           <MonthPicker changeFilter={changeFilter} />
+          <Flex justify="center">
+            <TransactionsSum transactions={filteredTransactions} />
+          </Flex>
           <Flex justify="space-evenly">
             <Box w={{ md: "60%", lg: "50%" }}>
               {error && <Text>{error}</Text>}

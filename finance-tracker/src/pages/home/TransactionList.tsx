@@ -32,11 +32,11 @@ export default function TransactionList({
             </Text>
             <Spacer />
             <Text color="gray.600" fontWeight="bold" fontSize="2xl">
-              €{transaction.amount}
+              €{parseFloat(transaction.amount).toFixed(2)}
             </Text>
             <CloseButton
               onClick={() => deleteDocument(transaction.id)}
-              color="#777"
+              color="gray.500"
             />
           </Flex>
           <Text color="lightgray">
