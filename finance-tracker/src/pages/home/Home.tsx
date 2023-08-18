@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useCollection } from "../../hooks/useCollection";
 import {
@@ -22,7 +22,9 @@ export default function Home() {
   const { user } = useAuthContext();
   const { documents, error } = useCollection("transactions");
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [currentFilter, setCurrentFilter] = useState<string>("January");
+  const [currentFilter, setCurrentFilter] = useState<string | null>(() => {
+    return localStorage.getItem("selectedFilter");
+  });
 
   const closeModal = () => {
     setOpenModal(false);
@@ -31,6 +33,12 @@ export default function Home() {
   const changeFilter = (newFilter: string) => {
     setCurrentFilter(newFilter);
   };
+
+  useEffect(() => {
+    if (currentFilter !== null) {
+      localStorage.setItem("selectedFilter", currentFilter);
+    }
+  }, [currentFilter]);
 
   const filteredTransactions = documents
     ? documents.filter((document) => {
@@ -54,7 +62,10 @@ export default function Home() {
       {isSmallScreen && (
         <Flex w="100%" flexDir="column" gap={6}>
           <Flex justify="space-between" align="center">
-            <MonthPicker changeFilter={changeFilter} />
+            <MonthPicker
+              changeFilter={changeFilter}
+              currentFilter={currentFilter}
+            />
             <TransactionsSum transactions={filteredTransactions} />
             <Button
               onClick={() => setOpenModal(true)}
@@ -83,7 +94,10 @@ export default function Home() {
       )}
       {!isSmallScreen && (
         <Flex flexDir="column" gap={10}>
-          <MonthPicker changeFilter={changeFilter} />
+          <MonthPicker
+            changeFilter={changeFilter}
+            currentFilter={currentFilter}
+          />
           <Flex justify="center">
             <TransactionsSum transactions={filteredTransactions} />
           </Flex>

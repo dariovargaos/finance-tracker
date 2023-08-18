@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Text } from "@chakra-ui/react";
+import { Text, Progress } from "@chakra-ui/react";
 import { DocumentData } from "firebase/firestore";
 
 interface TransactionsSumProps {

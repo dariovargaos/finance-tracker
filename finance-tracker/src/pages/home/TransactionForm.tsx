@@ -53,7 +53,7 @@ export default function TransactionForm({
   });
 
   return (
-    <Card bg="whatsapp.600">
+    <Card bg="whatsapp.600" pos={{ lg: "sticky" }} top={{ lg: "40" }}>
       <CardHeader display="flex" justifyContent="space-between">
         <Heading size="lg" color="white">
           Add transaction

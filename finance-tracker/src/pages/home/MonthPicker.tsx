@@ -9,6 +9,7 @@ import {
 
 interface MonthPickerProps {
   changeFilter: (newFilter: string) => void;
+  currentFilter: string | null;
 }
 
 const months: string[] = [
@@ -26,7 +27,10 @@ const months: string[] = [
   "December",
 ];
 
-export default function MonthPicker({ changeFilter }: MonthPickerProps) {
+export default function MonthPicker({
+  changeFilter,
+  currentFilter,
+}: MonthPickerProps) {
   const handleClick = (newFilter: string) => {
     changeFilter(newFilter);
   };
@@ -42,10 +46,13 @@ export default function MonthPicker({ changeFilter }: MonthPickerProps) {
     md: true,
     lg: false,
   });
+
+  const activeIndex =
+    currentFilter !== null ? months.indexOf(currentFilter) : -1;
   return (
     <Box display="flex" justifyContent="center">
       {!isSmallScreen && (
-        <Tabs colorScheme="whatsapp" isLazy>
+        <Tabs colorScheme="whatsapp" isLazy index={activeIndex}>
           <TabList>
             {months.map((month) => (
               <Tab key={month} onClick={() => handleClick(month)}>
@@ -57,7 +64,11 @@ export default function MonthPicker({ changeFilter }: MonthPickerProps) {
       )}
 
       {isSmallScreen && (
-        <Select placeholder="Pick a month" onChange={handleChange}>
+        <Select
+          placeholder="Pick a month"
+          onChange={handleChange}
+          value={currentFilter || ""}
+        >
           {months.map((month) => (
             <option key={month} value={month}>
               {month}
